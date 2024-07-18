@@ -1,0 +1,98 @@
+#spring.application.name=weatherService
+#spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+
+#management:
+#  health:
+#    circuitbreakers:
+#      enabled: true
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health
+#  endpoint:
+#    health:
+#      show-details: always
+
+
+management:
+  endpoints.web.exposure.include:
+    - '*'
+  endpoint.health.show-details: always
+  health.circuitbreakers.enabled: true
+
+
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      weatherService:
+#        registerHealthIndicator: true
+#        eventConsumerBufferSize: 10
+#        failureRateThreshold: 50
+#        minimumNumberOfCalls: 5
+#        automaticTransitionFromOpenToHalfOpenEnabled: true
+#        waitDurationInOpenState: 5s
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        slidingWindowSize: 10
+#        slidingWindowType: COUNT_BASED
+
+#resilience4j.circuitbreaker:
+#  instances:
+#    weatherService:
+#      registerHealthIndicator: true
+#      slidingWindowSize: 10
+#      minimumNumberOfCalls: 5
+#      permittedNumberOfCallsInHalfOpenState: 3
+#      automaticTransitionFromOpenToHalfOpenEnabled: true
+#      waitDurationInOpenState: 5s
+#      failureRateThreshold: 50
+#      eventConsumerBufferSize: 10
+
+#  retry:
+#    instances:
+#      userService:
+#        maxRetryAttempts: 5
+#        waitDuration: 10s
+
+
+resilience4j.circuitbreaker:
+  instances:
+    weatherService:
+      registerHealthIndicator: true
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 5s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+      recordExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - java.net.NoRouteToHostException
+#      ignoreExceptions:
+#        - com.bootcamptoprod.circuit.breaker.exception.MovieNotFoundException
+#      recordFailurePredicate: com.bootcamptoprod.circuit.breaker.predicate.RecordFailurePredicate
+#      ignoreExceptionPredicate: com.bootcamptoprod.circuit.breaker.predicate.IgnoreExceptionPredicate
+
+
+#resilience4j.circuitbreaker.instances.weatherService.register-health-indicator=true
+#resilience4j.circuitbreaker.instances.weatherService.sliding-window-type=COUNT_BASED
+#resilience4j.circuitbreaker.instances.weatherService.sliding-window-size=10
+#resilience4j.circuitbreaker.instances.weatherService.permitted-number-of-calls-in-half-open-state=5
+#resilience4j.circuitbreaker.instances.weatherService.wait-duration-in-open-state=10000
+#resilience4j.circuitbreaker.instances.weatherService.failure-rate-threshold=50
+#resilience4j.retry.instances.weatherService.max-attempts=3
+#resilience4j.retry.instances.weatherService.wait-duration=500
+
+#resilience4j.circuitbreaker.instances.weatherService.register-health-indicator=true
+#resilience4j.circuitbreaker.instances.weatherService.event-consumer-buffer-size=10
+#resilience4j.circuitbreaker.instances.weatherService.failure-rate-threshold=50
+#resilience4j.circuitbreaker.instances.weatherService.minimum-number-of-calls=5
+#resilience4j.circuitbreaker.instances.weatherService.automatic-transition-from-open-to-half-open-enabled=true
+#resilience4j.circuitbreaker.instances.weatherService.wait-duration-in-open-state=5s
+#resilience4j.circuitbreaker.instances.weatherService.permitted-number-of-calls-in-half-open-state=5
+#resilience4j.circuitbreaker.instances.weatherService.sliding-window-type=COUNT_BASED
+##resilience4j.circuitbreaker.instances.weatherService.sliding-window-size=10
+#
+#resilience4j.retry.instances.weatherService.maxAttempts=3
+#resilience4j.retry.instances.weatherService.waitDuration=500
